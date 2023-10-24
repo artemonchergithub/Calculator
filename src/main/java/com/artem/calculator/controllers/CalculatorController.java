@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @Controller
 public class CalculatorController {
-
+    String regex = "^[+-]?(\\d{1,3}(\\s?\\d{3})*([.,]\\d*)?|[.,]\\d+)$";
     @GetMapping("/")
     public String starting(Model model){
         return "calculator";
@@ -25,15 +25,22 @@ public class CalculatorController {
     }
     @PostMapping(value = "/calculator", params = "submit")
     public String postCalculator(@RequestParam String number_1, @RequestParam String number_2, @RequestParam String operations, Model model){
-        String regex = "^(\\+|-)?(\\d+((\\.|,)\\d*)?|(\\.|,)\\d+)$";
         model.addAttribute("firstNumber", number_1);
         model.addAttribute("secondNumber", number_2);
-        if (!number_1.matches(regex) || !number_2.matches(regex) || (operations.equals("division") && new BigDecimal(number_2.replace(',', '.')).compareTo(BigDecimal.ZERO) == 0)){
+        if (!number_1.matches(regex) || !number_2.matches(regex)){
             model.addAttribute("result", "Неверные входные данные");
             return "calculator";
         }
-        CalculationComponents components = new CalculationComponents(number_1.replace(',','.'), number_2.replace(',','.'), operations);
-        model.addAttribute("result", components.getResult());
+        if ((operations.equals("division") && new BigDecimal(number_2.replace(',', '.').replaceAll(" ","")).compareTo(BigDecimal.ZERO) == 0)) {
+            model.addAttribute("result", "Нельзя делить на 0");
+            return "calculator";
+        }
+
+        CalculationComponents components = new CalculationComponents(
+                number_1.replace(',','.').replaceAll(" ", ""),
+                number_2.replace(',','.').replaceAll(" ", ""),
+                operations);
+        model.addAttribute("result", components.getFormattedResult());
         return "calculator";
     }
     @PostMapping(value = "/calculator", params = "shutdown")

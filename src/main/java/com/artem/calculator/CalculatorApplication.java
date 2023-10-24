@@ -10,7 +10,6 @@ import java.net.URI;
 
 @SpringBootApplication
 public class CalculatorApplication {
-
 	private static ConfigurableApplicationContext ctx = null;
 
 	public static void main(String[] args) {

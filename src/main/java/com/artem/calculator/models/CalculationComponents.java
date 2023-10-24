@@ -2,6 +2,8 @@ package com.artem.calculator.models;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public class CalculationComponents {
 
@@ -58,6 +60,17 @@ public class CalculationComponents {
         return result;
     }
 
+    public String getFormattedResult(){
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(' ');
+        symbols.setDecimalSeparator('.');
+        DecimalFormat dfDecimal = new DecimalFormat("#0.######");
+        dfDecimal.setDecimalFormatSymbols(symbols);
+        dfDecimal.setGroupingSize(3);
+        dfDecimal.setGroupingUsed(true);
+        return dfDecimal.format(new BigDecimal(result.stripTrailingZeros().toString()));
+    }
+
     public void setResult(BigDecimal result) {
         this.result = result;
     }
@@ -72,6 +85,6 @@ public class CalculationComponents {
         result = firstNumber.multiply(secondNumber);
     }
     public void divisionResult(){
-        result = firstNumber.divide(secondNumber, 6, RoundingMode.HALF_EVEN);
+        result = firstNumber.divide(secondNumber, 6, RoundingMode.HALF_UP);
     }
 }
