@@ -11,19 +11,33 @@
     </div>
     <div class="container mt-5 mb-5">
         <form action="/calculator" method="post">
-            <label for="number_1">Первое число</label><br>
-            <textarea type="text" id="number_1" name="number_1" class="form-control" placeholder="число 1" th:text="${firstNumber}"></textarea><br>
-            <label for="number_2">Второе число</label><br>
-            <textarea type="text" id="number_2" name="number_2" class="form-control" placeholder="число 2" th:text="${secondNumber}"></textarea><br>
-            <br>
-            <select name="operations" onchange="callMe(this);" id="selectOperation" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <!-- <label for="number_1">Первое число</label><br> -->
+            <textarea type="text" id="number_1" name="number_1" class="form-control form-control-sm mb-2" placeholder="Число 1" th:text="${firstNumber}"></textarea>
+            <select name="operation_1" onchange="callMe1(this);" id="selectOperation1" class="form-select form-select-sm mb-2">
                 <option disabled>Выберите математическую операцию</option>
-                <option selected value="sum">Сложение</option>
-                <option value="subtraction">Вычитание</option>
-                <option value="multiplication">Умножение</option>
-                <option value="division">Деление</option>
+                <option selected value="sum">+</option>
+                <option value="subtraction">-</option>
+                <option value="multiplication">*</option>
+                <option value="division">/</option>
             </select>
-            <br>
+            <!-- <label for="number_2">Второе число</label><br> -->
+            <textarea type="text" id="number_2" name="number_2" class="form-control form-control-sm mb-2" placeholder="Число 2" th:text="${secondNumber}"></textarea>
+            <select name="operation_2" onchange="callMe2(this);" id="selectOperation2" class="form-select form-select-sm mb-2">
+                <option disabled>Выберите математическую операцию</option>
+                <option selected value="sum">+</option>
+                <option value="subtraction">-</option>
+                <option value="multiplication">*</option>
+                <option value="division">/</option>
+            </select>
+            <textarea type="text" id="number_3" name="number_3" class="form-control form-control-sm mb-2" placeholder="Число 3" th:text="${thirdNumber}"></textarea>
+            <select name="operation_3" onchange="callMe3(this);" id="selectOperation3" class="form-select form-select-sm mb-2">
+                <option disabled>Выберите математическую операцию</option>
+                <option selected value="sum">+</option>
+                <option value="subtraction">-</option>
+                <option value="multiplication">*</option>
+                <option value="division">/</option>
+            </select>
+            <textarea type="text" id="number_4" name="number_4" class="form-control form-control-sm mb-2" placeholder="Число 4" th:text="${fourthNumber}"></textarea>
             <button type="submit" name="submit" class="btn btn-success">Вычислить</button><br>
             <br>
             <h3 th:text="${result}"></h3><br>
@@ -31,10 +45,18 @@
             <button type="submit" name="shutdown" class="btn btn-danger">Отключить сервер</button><br>
         </form>
         <script type="text/javascript">
-            function callMe(obj){
-                localStorage.setItem("selectedStream",obj.options[obj.selectedIndex].value);
+            function callMe1(obj){
+                localStorage.setItem("selectedStream1",obj.options[obj.selectedIndex].value);
             }
-            document.getElementById("selectOperation").value = ""+localStorage.getItem("selectedStream")+"";
+            function callMe2(obj){
+                localStorage.setItem("selectedStream2",obj.options[obj.selectedIndex].value);
+            }
+            function callMe3(obj){
+                localStorage.setItem("selectedStream3",obj.options[obj.selectedIndex].value);
+            }
+            document.getElementById("selectOperation1").value = ""+localStorage.getItem("selectedStream1")+"";
+            document.getElementById("selectOperation2").value = ""+localStorage.getItem("selectedStream2")+"";
+            document.getElementById("selectOperation3").value = ""+localStorage.getItem("selectedStream3")+"";
         </script>
     </div>
 </body>

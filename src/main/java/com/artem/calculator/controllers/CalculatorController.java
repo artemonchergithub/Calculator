@@ -21,25 +21,55 @@ public class CalculatorController {
     @GetMapping("/calculator")
     public String calculator(Model model) {
         model.addAttribute("components", new CalculationComponents());
+        model.addAttribute("firstNumber", BigDecimal.ZERO);
+        model.addAttribute("secondNumber", BigDecimal.ZERO);
+        model.addAttribute("thirdNumber", BigDecimal.ZERO);
+        model.addAttribute("fourthNumber", BigDecimal.ZERO);
         return "calculator";
     }
     @PostMapping(value = "/calculator", params = "submit")
-    public String postCalculator(@RequestParam String number_1, @RequestParam String number_2, @RequestParam String operations, Model model){
+    public String postCalculator(@RequestParam String number_1, @RequestParam String number_2,
+                                 @RequestParam String number_3, @RequestParam String number_4,
+                                 @RequestParam String operation_1, @RequestParam String operation_2, @RequestParam String operation_3,
+                                 Model model){
         model.addAttribute("firstNumber", number_1);
         model.addAttribute("secondNumber", number_2);
-        if (!number_1.matches(regex) || !number_2.matches(regex)){
-            model.addAttribute("result", "Неверные входные данные");
+        model.addAttribute("thirdNumber", number_3);
+        model.addAttribute("fourthNumber", number_4);
+        if (!number_1.matches(regex)){
+            model.addAttribute("result", "Неверная запись числа 1");
             return "calculator";
         }
-        if ((operations.equals("division") && new BigDecimal(number_2.replace(',', '.').replaceAll(" ","")).compareTo(BigDecimal.ZERO) == 0)) {
-            model.addAttribute("result", "Нельзя делить на 0");
+        if (!number_2.matches(regex)){
+            model.addAttribute("result", "Неверная запись числа 2");
             return "calculator";
         }
+        if (!number_3.matches(regex)){
+            model.addAttribute("result", "Неверная запись числа 3");
+            return "calculator";
+        }
+        if (!number_4.matches(regex)){
+            model.addAttribute("result", "Неверная запись числа 4");
+            return "calculator";
+        }
+//        if ((operations.equals("division") && new BigDecimal(number_2.replace(',', '.').replaceAll(" ","")).compareTo(BigDecimal.ZERO) == 0)) {
+//            model.addAttribute("result", "Нельзя делить на 0");
+//            return "calculator";
+//        }
 
-        CalculationComponents components = new CalculationComponents(
-                number_1.replace(',','.').replaceAll(" ", ""),
-                number_2.replace(',','.').replaceAll(" ", ""),
-                operations);
+        String[] operations = new String[]{operation_1, operation_2, operation_3};
+        CalculationComponents components;
+        try {
+            components = new CalculationComponents(
+                    number_1.replace(',','.').replaceAll(" ", ""),
+                    number_2.replace(',','.').replaceAll(" ", ""),
+                    number_3.replace(',','.').replaceAll(" ", ""),
+                    number_4.replace(',','.').replaceAll(" ", ""),
+                    operations);
+        } catch (ArithmeticException e) {
+            model.addAttribute("result", e);
+            return "calculator";
+        }
         model.addAttribute("result", components.getFormattedResult());
         return "calculator";
     }
