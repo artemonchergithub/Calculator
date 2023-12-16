@@ -51,12 +51,19 @@ public class CalculationComponents {
         fourthNumber = new BigDecimal(fourthNumberString);
 
         result = operationResult(secondNumber, thirdNumber, operations[1]);
-        if (operations[2].equals("multiplication") || operations[2].equals("division")){
-            result = operationResult(result, fourthNumber, operations[2]);
+//        if (operations[2].equals("multiplication") || operations[2].equals("division")){
+//            result = operationResult(result, fourthNumber, operations[2]);
+//            result = operationResult(firstNumber, result, operations[0]);
+//        } else {
+//            result = operationResult(firstNumber, result, operations[0]);
+//            result = operationResult(result, fourthNumber, operations[2]);
+//        }
+        if (operations[0].equals("multiplication") || operations[0].equals("division")){
             result = operationResult(firstNumber, result, operations[0]);
+            result = operationResult(result, fourthNumber, operations[2]);
         } else {
-            result = operationResult(firstNumber, result, operations[0]);
             result = operationResult(result, fourthNumber, operations[2]);
+            result = operationResult(firstNumber, result, operations[0]);
         }
         switch (roundMode){
             case "mat" -> round = RoundingMode.HALF_UP;
