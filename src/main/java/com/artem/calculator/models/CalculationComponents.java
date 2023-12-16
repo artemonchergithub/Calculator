@@ -21,7 +21,7 @@ public class CalculationComponents {
 
     private BigDecimal result = BigDecimal.ZERO;
 
-    private Integer roundedResult = 0;
+    private BigInteger roundedResult = BigInteger.ZERO;
 
     private RoundingMode round = RoundingMode.HALF_UP;
 
@@ -64,7 +64,7 @@ public class CalculationComponents {
             case "trunc" -> round = RoundingMode.FLOOR;
         }
         BigDecimal temp = result.setScale(0, round);
-        roundedResult = temp.intValue();
+        roundedResult = temp.toBigInteger();
     }
     public Long getId() {
         return id;
