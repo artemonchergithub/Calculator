@@ -2,6 +2,7 @@ package com.artem.calculator.models;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -19,6 +20,10 @@ public class CalculationComponents {
     private BigDecimal fourthNumber = BigDecimal.ZERO;
 
     private BigDecimal result = BigDecimal.ZERO;
+
+    private Integer roundedResult = 0;
+
+    private RoundingMode round = RoundingMode.HALF_UP;
 
 
 
@@ -38,7 +43,8 @@ public class CalculationComponents {
     }
 
     public CalculationComponents(String firstNumberString, String secondNumberString,
-                                 String thirdNumberString, String fourthNumberString, String[] operations) {
+                                 String thirdNumberString, String fourthNumberString,
+                                 String[] operations, String roundMode) {
         firstNumber = new BigDecimal(firstNumberString);
         secondNumber = new BigDecimal(secondNumberString);
         thirdNumber = new BigDecimal(thirdNumberString);
@@ -52,6 +58,13 @@ public class CalculationComponents {
             result = operationResult(firstNumber, result, operations[0]);
             result = operationResult(result, fourthNumber, operations[2]);
         }
+        switch (roundMode){
+            case "mat" -> round = RoundingMode.HALF_UP;
+            case "buh" -> round = RoundingMode.HALF_EVEN;
+            case "trunc" -> round = RoundingMode.FLOOR;
+        }
+        BigDecimal temp = result.setScale(0, round);
+        roundedResult = temp.intValue();
     }
     public Long getId() {
         return id;
@@ -119,4 +132,9 @@ public class CalculationComponents {
         }
         return result;
     }
+
+    public String getRoundedResult(){
+        return roundedResult.toString();
+    }
+
 }

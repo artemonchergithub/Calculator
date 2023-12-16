@@ -11,7 +11,6 @@
     </div>
     <div class="container mt-5 mb-5">
         <form action="/calculator" method="post">
-            <!-- <label for="number_1">Первое число</label><br> -->
             <textarea type="text" id="number_1" name="number_1" class="form-control form-control-sm mb-2" placeholder="Число 1" th:text="${firstNumber}"></textarea>
             <select name="operation_1" onchange="callMe1(this);" id="selectOperation1" class="form-select form-select-sm mb-2">
                 <option disabled>Выберите математическую операцию</option>
@@ -20,7 +19,6 @@
                 <option value="multiplication">*</option>
                 <option value="division">/</option>
             </select>
-            <!-- <label for="number_2">Второе число</label><br> -->
             <textarea type="text" id="number_2" name="number_2" class="form-control form-control-sm mb-2" placeholder="Число 2" th:text="${secondNumber}"></textarea>
             <select name="operation_2" onchange="callMe2(this);" id="selectOperation2" class="form-select form-select-sm mb-2">
                 <option disabled>Выберите математическую операцию</option>
@@ -38,25 +36,46 @@
                 <option value="division">/</option>
             </select>
             <textarea type="text" id="number_4" name="number_4" class="form-control form-control-sm mb-2" placeholder="Число 4" th:text="${fourthNumber}"></textarea>
-            <button type="submit" name="submit" class="btn btn-success">Вычислить</button><br>
             <br>
+            <h3>Результат:</h3><br>
             <h3 th:text="${result}"></h3><br>
+            <select name="roundingMode" onchange="callMeRounding(this);" id="selectRoundMode" class="form-select form-select-sm mb-2">
+                <option disabled>Выберите тип округления</option>
+                <option selected value="mat">Математическое</option>
+                <option value="buh">Бухгалтерское</option>
+                <option value="trunc">Усечение</option>
+            </select>
+            <br>
+            <h3>Округление до целых:</h3><br>
+            <h3 th:text="${roundedResult}"></h3><br>
+            <button type="submit" name="submit" class="btn btn-success">Вычислить</button><br>
             <br>
             <button type="submit" name="shutdown" class="btn btn-danger">Отключить сервер</button><br>
         </form>
         <script type="text/javascript">
             function callMe1(obj){
-                localStorage.setItem("selectedStream1",obj.options[obj.selectedIndex].value);
+                sessionStorage.setItem("selectedStream1",obj.options[obj.selectedIndex].value);
             }
             function callMe2(obj){
-                localStorage.setItem("selectedStream2",obj.options[obj.selectedIndex].value);
+                sessionStorage.setItem("selectedStream2",obj.options[obj.selectedIndex].value);
             }
             function callMe3(obj){
-                localStorage.setItem("selectedStream3",obj.options[obj.selectedIndex].value);
+                sessionStorage.setItem("selectedStream3",obj.options[obj.selectedIndex].value);
             }
-            document.getElementById("selectOperation1").value = ""+localStorage.getItem("selectedStream1")+"";
-            document.getElementById("selectOperation2").value = ""+localStorage.getItem("selectedStream2")+"";
-            document.getElementById("selectOperation3").value = ""+localStorage.getItem("selectedStream3")+"";
+            function callMeRounding(obj){
+                sessionStorage.setItem("selectedStream4",obj.options[obj.selectedIndex].value);
+            }
+            if (sessionStorage.getItem("hasCodeRunBefore") === null){
+                sessionStorage.setItem("selectedStream1", "sum");
+                sessionStorage.setItem("selectedStream2", "sum");
+                sessionStorage.setItem("selectedStream3", "sum");
+                sessionStorage.setItem("selectedStream4", "mat");
+                sessionStorage.setItem("hasCodeRunBefore", true);
+            }
+            document.getElementById("selectOperation1").value = ""+sessionStorage.getItem("selectedStream1")+"";
+            document.getElementById("selectOperation2").value = ""+sessionStorage.getItem("selectedStream2")+"";
+            document.getElementById("selectOperation3").value = ""+sessionStorage.getItem("selectedStream3")+"";
+            document.getElementById("selectRoundMode").value = ""+sessionStorage.getItem("selectedStream4")+"";
         </script>
     </div>
 </body>

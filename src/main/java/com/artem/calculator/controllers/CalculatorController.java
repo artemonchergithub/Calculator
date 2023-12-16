@@ -25,12 +25,14 @@ public class CalculatorController {
         model.addAttribute("secondNumber", BigDecimal.ZERO);
         model.addAttribute("thirdNumber", BigDecimal.ZERO);
         model.addAttribute("fourthNumber", BigDecimal.ZERO);
+        model.addAttribute("operation_1", "sum");
         return "calculator";
     }
     @PostMapping(value = "/calculator", params = "submit")
     public String postCalculator(@RequestParam String number_1, @RequestParam String number_2,
                                  @RequestParam String number_3, @RequestParam String number_4,
                                  @RequestParam String operation_1, @RequestParam String operation_2, @RequestParam String operation_3,
+                                 @RequestParam String roundingMode,
                                  Model model){
         model.addAttribute("firstNumber", number_1);
         model.addAttribute("secondNumber", number_2);
@@ -65,12 +67,14 @@ public class CalculatorController {
                     number_2.replace(',','.').replaceAll(" ", ""),
                     number_3.replace(',','.').replaceAll(" ", ""),
                     number_4.replace(',','.').replaceAll(" ", ""),
-                    operations);
+                    operations,
+                    roundingMode);
         } catch (ArithmeticException e) {
-            model.addAttribute("result", e);
+            model.addAttribute("result", "Деление на 0");
             return "calculator";
         }
         model.addAttribute("result", components.getFormattedResult());
+        model.addAttribute("roundedResult", components.getRoundedResult());
         return "calculator";
     }
     @PostMapping(value = "/calculator", params = "shutdown")
